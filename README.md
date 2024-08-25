@@ -32,6 +32,8 @@ This application uses the following LLM model:
 
 - Python 3.7+
 - An API key for [LMStudio](https://lmstudio.ai/) to use the LLM model. (This key can be obtained by signing up on the LMStudio platform.)
+- ![Alt text](Resources/LMstudio.jpg)
+
 
 ### Installation
 
