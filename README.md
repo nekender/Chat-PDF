@@ -37,8 +37,8 @@ This application uses the following LLM model:
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/chat-with-pdfs.git
-    cd chat-with-pdfs
+    git clone https://github.com/yourusername/chat-pdf.git
+    cd chat-pdf
     ```
 
 2. **Install the required dependencies**:
@@ -91,6 +91,3 @@ The application uses `PyMuPDF` (fitz) to highlight relevant text directly within
 
 To improve performance, the application employs caching using the `lru_cache` decorator, which stores the results of expensive query processing operations. This reduces response time for repeated queries.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
