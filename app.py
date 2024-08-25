@@ -57,15 +57,6 @@ def highlight_pdf(pdf_path, highlight_words, output_pdf_path):
     doc.close()
     return output_pdf_path
 
-# Query Processing Functions
-def preprocess_query(query):
-    return query.lower()
-
-def extract_name_from_text(pdf_text):
-    names = re.findall(r'\b[A-Z][a-z]+(?:\s[A-Z][a-z]+)+\b', pdf_text)
-    if names:
-        return names[0]  # Return the first found name
-    return None
 
 def match_query_to_text(query, pdf_text):
     model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
@@ -105,7 +96,7 @@ def process_query(query, pdf_text, pdf_file_path):
         Answer and Word List:"""
 
     completion = client.chat.completions.create(
-        model="model-identifier",  # Replace with your model identifier
+        model="model-identifier", 
         messages=[{"role": "user", "content": prompt}],
         temperature=0.7,
         stream=False
@@ -152,7 +143,6 @@ def process_pdf_content(pdf_content):
 # Streamlit App
 st.set_page_config(layout="wide", page_title="Chat with PDFs using Local LLM")
 
-# Custom CSS to remove the red outline and customize input box
 st.markdown("""
     <style>
     .stTextInput > div > div > input {
@@ -165,7 +155,6 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Initialize session state
 if 'pdf_contents' not in st.session_state:
     st.session_state.pdf_contents = {}
 if 'pdf_texts' not in st.session_state:
@@ -179,10 +168,8 @@ if 'clear_query' not in st.session_state:
 if 'query_input' not in st.session_state:  
     st.session_state.query_input = ""
 
-# Title
 st.title("Chat with PDFs using Local LLM")
 
-# Create two columns for layout
 col1, col2 = st.columns([2, 1])
 
 with col1:
@@ -199,7 +186,7 @@ with col1:
     # Query processing
     if st.button("Submit Query"):
         if query:
-            st.session_state.clear_query = True  # Set the flag to clear the input after processing
+            st.session_state.clear_query = True  # flag to clear the input after processing
             try:
                 with st.spinner("Processing your query..."):
                     responses = []
@@ -216,7 +203,7 @@ with col1:
 
                     final_response = "\n\n".join([f"From {name}: {response}" for name, response, _ in responses])
                     
-                    # Add query and response to chat history
+                
                     st.session_state.messages.append({"role": "user", "content": query})
                     st.session_state.messages.append({"role": "assistant", "content": final_response})
                     
