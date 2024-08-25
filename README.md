@@ -4,7 +4,7 @@ This Streamlit application enables interactive querying of PDF documents using a
 
 ## Demo Video
 
-![Alt text](Resources/Demo)
+[![Alt text](thumbnail)](Resources/Demo.mp4)
 
 ## Features
 
