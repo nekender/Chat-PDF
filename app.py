@@ -3,16 +3,12 @@ import PyPDF2
 import re
 import os
 import tempfile
-import hashlib
 import base64
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from openai import OpenAI
-import time
-import json
 from collections import OrderedDict
-import fitz  # PyMuPDF
-import pdfplumber
+import fitz 
 from sentence_transformers import SentenceTransformer, util
 from functools import lru_cache
 
@@ -28,11 +24,13 @@ def extract_text_from_pdf(file_path):
             text += page.extract_text()
     return text
 
+#Clean text
 def preprocess_text(text):
     text = re.sub(r'\s+', ' ', text)
     text = text.replace('\n', ' ')
     return text.strip()
 
+#Combine both the above function for better organization
 def process_pdf(file_path):
     raw_text = extract_text_from_pdf(file_path)
     processed_text = preprocess_text(raw_text)
@@ -57,7 +55,7 @@ def highlight_pdf(pdf_path, highlight_words, output_pdf_path):
     doc.close()
     return output_pdf_path
 
-
+#Extract relevant part that would be sent to LLM reducing load
 def match_query_to_text(query, pdf_text):
     model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
     sentences = re.split(r'(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s', pdf_text)
@@ -71,6 +69,7 @@ def match_query_to_text(query, pdf_text):
     output = [(query, sentence) for sentence in top_sentences]
     return (output,)
 
+#Caching
 @lru_cache(maxsize=100)
 def cached_process_query(query, pdf_text, pdf_file_path):
     return process_query(query, pdf_text, pdf_file_path)
